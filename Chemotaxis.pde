@@ -31,7 +31,8 @@ class Ball {
     // change positioning
     ballX += xSpeed;
     ballY += ySpeed;
-    ellipse(ballX, ballY, ballSize, ballSize);
+    fill(255);
+    ellipse(ballX, ballY, ballSize*health/100, ballSize*health/100);
   }
   void loseHealth() {
     health -= 1;
@@ -62,27 +63,19 @@ Shooter shooter = new Shooter();
 
 class Bacteria {
   int x, y, bodySize, initialX, initialY;
+  int c;
   Bacteria() {
     x = (int)(Math.random()*500);
     y = (int)(Math.random()*350);
     initialX = x;
     initialY = y;
     bodySize = (int)(Math.random()*10)+5;
+    c = color((int)(Math.random()*255), (int)(Math.random()*255), (int)(Math.random()*255));
   }
   int d(int a, int b) {
     return abs(a - b);
   }
   void move() {
-    // for(int i=0;i<shooter.ballList.size();i++) {
-      // int ballX = shooter.ballList.get(i).ballX;
-      // int ballY = shooter.ballList.get(i).ballY;
-      // float distance = dist(x, y, ballX, ballY);
-      // if(distance < shooter.ballList.get(i).ballSize - bodySize) {
-      //   print("we gonners");
-      // }
-      // if(distance < 30) { // remove distance
-      // println("distance: "+distance);
-      // while(true) {
     if(shooter.ballList.size() >= 1) {
       int ballX = shooter.ballList.get(0).ballX;
       int ballY = shooter.ballList.get(0).ballY;
@@ -101,7 +94,7 @@ class Bacteria {
       }
     } else {
       if(initialX >= x) {
-      x = x + (int)(Math.random()*3)+1;
+        x = x + (int)(Math.random()*3)+1;
       } else {
         x = x - (int)(Math.random()*3)-1;
       }
@@ -111,12 +104,9 @@ class Bacteria {
         y = y - (int)(Math.random()*3)-1;
       }
     }
-    
-      // }
-      // }
-    // }
   }
   void show() {
+    fill(c);
     ellipse(x, y, bodySize, bodySize);
   }
 }
@@ -124,27 +114,24 @@ Bacteria[] colony;
 
 void setup() {
   size(500,500);
+  noStroke();
   colony = new Bacteria[100];
   for(int i=0;i<colony.length;i++) {
     colony[i] = new Bacteria();
   }
 }
+int pointerX = mouseX;
+int pointerY = mouseY;
 void draw() {
   background(0);
+  fill(255,0,0);
+  ellipse(mouseX, mouseY, 5, 5);
   fill(255);
   for(int i=0;i<colony.length;i++) {
     colony[i].move();
     colony[i].show();
   }
   shooter.drawBalls();
-}
-void mouseMoved() {
-  int yMouse = mouseY;
-  if(mouseY < 400) {
-    yMouse = 400;
-  }
-  fill(255,0,0);
-  ellipse(mouseX, mouseY, 10, 10);
 }
 void mousePressed() {
   if (shooter.ballList.size()>=1) return;
