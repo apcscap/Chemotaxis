@@ -51,7 +51,7 @@ class Shooter {
     for(int i=0;i<ballList.size();i++) {
       if(ballList.get(i).ballY < 0 || ballList.get(i).health <= 0) {
         ballList.remove(i);
-        println("ballList: "+ballList);
+        // println("ballList: "+ballList);
         continue;
       }
       ballList.get(i).move();
